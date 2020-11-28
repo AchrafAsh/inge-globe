@@ -5,7 +5,9 @@ const Navbar: React.FC = () => {
         <header className='w-screen flex flex-row items-center justify-between p-6 max-w-6xl mx-auto'>
             <div>
                 <Link href='/'>
-                    <a className='text-xl'>🌍 Ingé Globe</a>
+                    <a className='text-xl font-black uppercase'>
+                        🌍 Ingé Globe
+                    </a>
                 </Link>
             </div>
             <nav className='flex flex-row items-center justify-center space-x-6'>

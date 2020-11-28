@@ -41,13 +41,13 @@ const Post: React.FC<Post> = ({
             </div>
             <div className='px-6 flex flex-row items-center space-x-6'>
                 <button className='flex flex-row items-center space-x-1'>
-                    <img src='img/heart-empty.png' />
+                    <img src='img/heart-empty.svg' className='w-4' />
                     <span className='text-xs font-thin text-purple-500'>
                         {likes}
                     </span>
                 </button>
                 <button className='outline-none flex flex-row items-center space-x-1'>
-                    <img src='img/msg-full.png' />
+                    <img src='img/msg-full.svg' className='w-4' />
                     <span className='text-xs font-thin text-purple-500'>
                         {comments}
                     </span>
