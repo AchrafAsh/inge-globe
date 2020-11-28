@@ -19,6 +19,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "noImplicitAny": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@components/*": [
@@ -38,6 +40,9 @@
       ],
       "@models/*": [
         "models/*"
+      ],
+      "@config/*": [
+        "config/*"
       ],
     }
   },

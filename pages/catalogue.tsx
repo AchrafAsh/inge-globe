@@ -1,68 +1,83 @@
+import Layout from '@components/layout'
+import { GetServerSideProps } from 'next'
+import { withIronSession } from 'next-iron-session'
 import { useState } from 'react'
 
-const Page: React.FC = () => {
+interface User {
+    uid: string
+    firstname: string
+    lastname: string
+    email: string
+}
+
+const Page: React.FC<{ user: User }> = ({ user }) => {
     return (
-        <main className='max-w-6xl mx-auto py-12'>
-            <div className='py-6'>
-                <h1 className='font-black text-3xl text-center'>
-                    Trouver la formation qui vous convient!
-                </h1>
+        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
+            <main className='max-w-6xl mx-auto py-12'>
                 <div className='py-6'>
-                    <div className='bg-white shadow-md rounded-md w-max mx-auto flex flex-row items-center overflow-hidden'>
-                        <input
-                            className='px-6 py-2 flex-1'
-                            type='text'
-                            name='search'
-                            placeholder='Double diplôme au Canada'
+                    <h1 className='font-black text-3xl text-center'>
+                        Trouver la formation qui vous convient!
+                    </h1>
+                    <div className='py-6'>
+                        <div className='bg-white shadow-md rounded-md w-max mx-auto flex flex-row items-center overflow-hidden'>
+                            <input
+                                className='px-6 py-2 flex-1'
+                                type='text'
+                                name='search'
+                                placeholder='Double diplôme au Canada'
+                            />
+                            <button className='px-6 py-2'>
+                                <img src='img/search.png' />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className='py-6 flex flex-row items-center space-x-6'>
+                        <Filter
+                            label='Type'
+                            feature='type'
+                            values={[
+                                'Double diplôme',
+                                'Partenaire',
+                                'Semestre non-diplômant'
+                            ]}
                         />
-                        <button className='px-6 py-2'>
-                            <img src='img/search.png' />
-                        </button>
+                        <Filter
+                            label='Pays'
+                            feature='city'
+                            values={['Canada', 'Espagne', 'Suède']}
+                        />
+                        <Filter
+                            label='Ville'
+                            feature='city'
+                            values={['Montréal', 'Stockholm', 'Madrid']}
+                        />
                     </div>
                 </div>
+                <hr className='py-3' />
 
-                <div className='py-6 flex flex-row items-center space-x-6'>
-                    <Filter
-                        label='Type'
-                        feature='type'
-                        values={[
-                            'Double diplôme',
-                            'Partenaire',
-                            'Semestre non-diplômant'
+                <div
+                    id='results'
+                    className='px-6 flex flex-col items-stretch space-y-3'
+                >
+                    <ResultCard
+                        title='McGill University'
+                        subtitle='Montréal, Canada'
+                        features={[
+                            {
+                                key: 'Alumni',
+                                value: 'Khaoula Belahsen, ... (6)'
+                            }
                         ]}
                     />
-                    <Filter
-                        label='Pays'
-                        feature='city'
-                        values={['Canada', 'Espagne', 'Suède']}
-                    />
-                    <Filter
-                        label='Ville'
-                        feature='city'
-                        values={['Montréal', 'Stockholm', 'Madrid']}
+                    <ResultCard
+                        title='McGill University'
+                        subtitle='Montréal, Canada'
+                        features={[]}
                     />
                 </div>
-            </div>
-            <hr className='py-3' />
-
-            <div
-                id='results'
-                className='px-6 flex flex-col items-stretch space-y-3'
-            >
-                <ResultCard
-                    title='McGill University'
-                    subtitle='Montréal, Canada'
-                    features={[
-                        { key: 'Alumni', value: 'Khaoula Belahsen, ... (6)' }
-                    ]}
-                />
-                <ResultCard
-                    title='McGill University'
-                    subtitle='Montréal, Canada'
-                    features={[]}
-                />
-            </div>
-        </main>
+            </main>
+        </Layout>
     )
 }
 
@@ -156,5 +171,37 @@ const Filter: React.FC<FilterProps> = ({ feature, label, values }) => {
         </div>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = withIronSession(
+    async ({ req, res }) => {
+        const user = req.session.get('user')
+
+        if (user) {
+            // fetch some more information
+            console.log({ user })
+            return {
+                props: {
+                    user
+                }
+            }
+        }
+
+        if (!user) {
+            // redirect to login page
+
+            res.writeHead(301, {
+                Location: '/login'
+            })
+            return res.end()
+        }
+    },
+    {
+        cookieName: process.env.COOKIE_NAME!,
+        cookieOptions: {
+            secure: process.env.NODE_ENV === 'production'
+        },
+        password: process.env.SESSION_SECRET!
+    }
+)
 
 export default Page

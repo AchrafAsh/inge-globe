@@ -1,24 +1,34 @@
 import { useState } from 'react'
+import Layout from '@components/layout/index'
+import { GetServerSideProps } from 'next'
+import { withIronSession } from 'next-iron-session'
 
-const Page: React.FC = () => {
+interface User {
+    firstname: string
+    lastname: string
+}
+
+const Page: React.FC<User> = ({ user }) => {
     return (
-        <main className='max-w-6xl mx-auto py-12'>
-            <div className='pb-12 max-w-4xl mx-auto'>
-                <h1 className='text-3xl font-black'>FAQ</h1>
-            </div>
+        <Layout firstname={'a'} lastname={' '}>
+            <main className='max-w-6xl mx-auto py-12'>
+                <div className='pb-12 max-w-4xl mx-auto'>
+                    <h1 className='text-3xl font-black'>FAQ</h1>
+                </div>
 
-            <div className='p-6 rounded-md bg-white shadow-md flex flex-col space-y-6 max-w-4xl mx-auto'>
-                <QACard
-                    question='Dois-je faire une démarche à la DFR pour une formation hors catalogue?'
-                    answer='Oui. Quelque soit la formation il faut toujours passer par la DFR avant toute démarche.'
-                />
-                <hr />
-                <QACard
-                    question='Dois-je faire une démarche à la DFR pour une formation hors catalogue?'
-                    answer='Oui. Quelque soit la formation il faut toujours passer par la DFR avant toute démarche.'
-                />
-            </div>
-        </main>
+                <div className='p-6 rounded-md bg-white shadow-md flex flex-col space-y-6 max-w-4xl mx-auto'>
+                    <QACard
+                        question='Dois-je faire une démarche à la DFR pour une formation hors catalogue?'
+                        answer='Oui. Quelque soit la formation il faut toujours passer par la DFR avant toute démarche.'
+                    />
+                    <hr />
+                    <QACard
+                        question='Dois-je faire une démarche à la DFR pour une formation hors catalogue?'
+                        answer='Oui. Quelque soit la formation il faut toujours passer par la DFR avant toute démarche.'
+                    />
+                </div>
+            </main>
+        </Layout>
     )
 }
 
@@ -60,5 +70,37 @@ const QACard: React.FC<QAProps> = ({ question, answer }) => {
         </div>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = withIronSession(
+    async ({ req, res }) => {
+        const user = req.session.get('user')
+
+        if (user) {
+            // fetch some more information
+            console.log({ user })
+            return {
+                props: {
+                    user
+                }
+            }
+        }
+
+        if (!user) {
+            // redirect to login page
+
+            res.writeHead(301, {
+                Location: '/login'
+            })
+            return res.end()
+        }
+    },
+    {
+        cookieName: process.env.COOKIE_NAME!,
+        cookieOptions: {
+            secure: process.env.NODE_ENV === 'production'
+        },
+        password: process.env.SESSION_SECRET!
+    }
+)
 
 export default Page

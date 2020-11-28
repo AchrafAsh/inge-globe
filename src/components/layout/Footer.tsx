@@ -1,6 +1,6 @@
 const Footer: React.FC = () => {
     return (
-        <footer className='max-w-3xl mx-auto border-t border-purple-200 text-center p-6'>
+        <footer className='max-w-3xl mx-auto border-t border-purple-200 text-center p-6 absolute inset-x-0 bottom-0'>
             <small className='w-full text-center'>
                 <span className='font-semibold uppercase'>
                     🌍 Ingé Globe &nbsp;

@@ -4,17 +4,19 @@ import Layout from '@components/layout'
 
 interface User {
     uid: string
-    email: string
     firstname: string
     lastname: string
+    email: string
+    promotion: number
+    major: string
 }
 
-const Page: React.FC<{ user: User }> = ({ user }) => {
+const Page: React.FC<{ user: User; profile: User }> = ({ user, profile }) => {
     return (
         <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
-            <main className='max-w-6xl mx-auto'>
-                <div>Forum</div>
-            </main>
+            <div>
+                {profile.firstname} {profile.lastname}
+            </div>
         </Layout>
     )
 }
@@ -25,9 +27,14 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
 
         if (user) {
             // fetch some more information
+            // get profile from uid
+            const uid = req.query
+            console.log({ uid })
+
             return {
                 props: {
-                    user
+                    user,
+                    profile: user
                 }
             }
         }
@@ -38,8 +45,7 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
             res.writeHead(301, {
                 Location: '/login'
             })
-            res.end()
-            return { props: {} }
+            return res.end()
         }
     },
     {
