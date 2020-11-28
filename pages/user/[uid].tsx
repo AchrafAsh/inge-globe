@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
             res.writeHead(301, {
                 Location: '/login'
             })
-            return res.end()
+            res.end()
         }
     },
     {

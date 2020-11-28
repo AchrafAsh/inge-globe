@@ -39,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
                 Location: '/login'
             })
             res.end()
-            return { props: {} }
         }
     },
     {
