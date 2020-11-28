@@ -4,13 +4,15 @@ import { GetServerSideProps } from 'next'
 import { withIronSession } from 'next-iron-session'
 
 interface User {
+    uid: string
     firstname: string
     lastname: string
+    email: string
 }
 
-const Page: React.FC<User> = ({ user }) => {
+const Page: React.FC<{ user: User }> = ({ user }) => {
     return (
-        <Layout firstname={'a'} lastname={' '}>
+        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
             <main className='max-w-6xl mx-auto py-12'>
                 <div className='pb-12 max-w-4xl mx-auto'>
                     <h1 className='text-3xl font-black'>FAQ</h1>

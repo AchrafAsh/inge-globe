@@ -1,25 +1,33 @@
 import { useState } from 'react'
+import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 import { withIronSession } from 'next-iron-session'
 
 const Page: React.FC = () => {
     return (
-        <main className='py-12 bg-purple-50 flex items-center justify-center'>
-            <div className='bg-white rounded-md shadow-md'>
-                <div className='flex flex-row justify-between space-x-6 p-12'>
-                    <div className='flex-1'>
-                        <Login />
-                    </div>
-                    <div className='flex flex-col items-center space-y-3'>
-                        <span className='text-gray-200 font-semibold'>OU</span>
-                        <div className='border border-gray-100 w-0 h-full' />
-                    </div>
-                    <div className='flex-1'>
-                        <Signup />
+        <>
+            <Head>
+                <title>Connexion</title>
+            </Head>
+            <main className='min-h-screen py-12 bg-purple-50 flex items-center justify-center'>
+                <div className='bg-white rounded-md shadow-md'>
+                    <div className='flex flex-row justify-between space-x-6 p-12'>
+                        <div className='flex-1'>
+                            <Login />
+                        </div>
+                        <div className='flex flex-col items-center space-y-3'>
+                            <span className='text-gray-200 font-semibold'>
+                                OU
+                            </span>
+                            <div className='border border-gray-100 w-0 h-full' />
+                        </div>
+                        <div className='flex-1'>
+                            <Signup />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
+        </>
     )
 }
 
