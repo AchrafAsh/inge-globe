@@ -1,6 +1,6 @@
+import Layout from '@components/layout'
 import { GetServerSideProps } from 'next'
 import { withIronSession } from 'next-iron-session'
-import Layout from '@components/layout'
 
 interface User {
     uid: string
@@ -12,9 +12,7 @@ interface User {
 const Page: React.FC<{ user: User }> = ({ user }) => {
     return (
         <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
-            <main className='max-w-6xl mx-auto'>
-                <div>Forum</div>
-            </main>
+            <div>{}</div>
         </Layout>
     )
 }
@@ -24,10 +22,12 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
         const user = req.session.get('user')
 
         if (user) {
-            // fetch some more information
+            // fetch university information
+            // const university =
             return {
                 props: {
                     user
+                    // university
                 }
             }
         }
@@ -50,5 +50,3 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
         password: process.env.SESSION_SECRET!
     }
 )
-
-export default Page

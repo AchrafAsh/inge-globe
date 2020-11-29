@@ -32,7 +32,7 @@ const Page: React.FC<{ user: User }> = ({ user }) => {
                         </div>
                     </div>
 
-                    <div className='py-6 flex flex-row items-center space-x-6'>
+                    <div className='p-6 flex flex-row items-center space-x-6'>
                         <Filter
                             label='Type'
                             feature='type'
@@ -140,13 +140,13 @@ const Filter: React.FC<FilterProps> = ({ feature, label, values }) => {
                     xmlns='http://www.w3.org/2000/svg'
                 >
                     <path
-                        fill-rule='evenodd'
+                        fillRule='evenodd'
                         d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
                     />
                 </svg>
             </button>
             {toggle && (
-                <div className='absolute bg-white p-1 rounded-md shadow-lg flex flex-col'>
+                <div className='absolute mt-1 bg-white p-1 rounded-md shadow-lg flex flex-col'>
                     {values && (
                         <>
                             <div
@@ -193,6 +193,7 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
                 Location: '/login'
             })
             res.end()
+            return { props: {} }
         }
     },
     {
