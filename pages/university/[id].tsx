@@ -50,3 +50,5 @@ export const getServerSideProps: GetServerSideProps = withIronSession(
         password: process.env.SESSION_SECRET!
     }
 )
+
+export default Page
