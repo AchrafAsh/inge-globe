@@ -1,38 +1,41 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
-import db from '@config/db'
+import knex from 'knex'
+
+const db = knex({
+    client: 'pg',
+    connection: process.env.DB_URI
+})
 
 const typeDefs = gql`
     type Query {
-        posts(first: Int = 10, skip: Int = 0): [Post!]!
-        user(uid: ID!): [User!]!
+        users: [User]!
+        user(uid: ID!): User
     }
 
     type User {
-        id: ID!
-        email: String!
+        uid: ID!
         firstname: String!
         lastname: String!
+        email: String!
         promotion: Int!
-        posts: [Post!]!
-        comments: [Comment!]!
+        major: String!
         createdAt: Int!
     }
 
     type Post {
         id: ID!
+        authorId: ID!
         title: String!
-        author: User!
         body: String!
-        likes: String!
-        comments: [Comment!]!
+        likes: Int!
         createdAt: Int!
     }
 
     type Comment {
         id: ID!
-        post: Post!
-        replyTo: Comment!
-        author: User!
+        authorId: ID!
+        postId: ID!
+        replyTo: ID!
         body: String!
         createdAt: Int!
     }
@@ -43,49 +46,38 @@ const typeDefs = gql`
         country: String!
         city: String!
         description: String!
-        image: String!
     }
 `
 
 const resolvers = {
     Query: {
-        posts: (_parent: any, args: any, _context: any) => {
-            return db
-                .select('*')
-                .from('posts')
-                .orderBy('created_at', 'desc')
-                .limit(Math.min(args.first, 20))
-                .offset(args.skip)
+        users: (_parent: any, _args: any, _context: any) => {
+            return db.select('*').from('users')
         },
-
-        user: (_parent: any, args: any, _context: any) => {
-            return db.select('*').from('users').where({ uid: args.uid })
-        }
-    },
-
-    Post: {
-        comments: (post: any, _args: any, _context: any) => {
-            return db.select('*').from('comments').where({ post_id: post.id })
-        }
-    },
-
-    User: {
-        posts: (user: any, _args: any, _context: any) => {
-            return db.select('*').from('posts').where({ author_id: user.uid })
-        },
-        comments: (user: any, _args: any, _context: any) => {
-            return db
-                .select('*')
-                .from('comments')
-                .where({ author_id: user.uid })
+        user: (_parent: any, { uid }: { uid: string }, _context: any) => {
+            return db.select('*').from('users').where({ uid }).first()
         }
     }
+
+    // Mutation: {
+    //     createUser: async (
+    //         _: any,
+    //         { description, done }: { description: any; done: any },
+    //         _context: any
+    //     ) => {
+    //         return (
+    //             await db('todos').insert({ description, done }).returning('*')
+    //         )[0]
+    //     }
+    // }
 }
 
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({})
+    context: () => {
+        return {}
+    }
 })
 
 export const config = {

@@ -1,21 +1,31 @@
 {
-
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
+    "module": "esnext",
     "lib": [
+      "ES2017",
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "removeComments": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "noImplicitAny": true,
@@ -37,12 +47,6 @@
       ],
       "@styles/*": [
         "src/styles/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ],
-      "@config/*": [
-        "config/*"
       ],
     }
   },
