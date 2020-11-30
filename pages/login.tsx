@@ -1,16 +1,25 @@
 import Head from 'next/head'
-import { signIn, useSession } from 'next-auth/client'
+import { signIn } from 'next-auth/client'
 import LoginForm from '@components/LoginForm'
 import SignupForm from '@components/SignupForm'
 
+const callbackUrl = process.env.NEXTAUTH_URL
+
 const Page: React.FC = () => {
     const handleLogin = (email: string) => {
-        signIn('email', { email })
+        // verify the user exists
+        // do the query with urql
+
+        // if the user exists proceed to login
+        signIn('email', { email, callbackUrl })
     }
 
     const handleSignup = ({ email }: { email: string }) => {
         // check if no user with that email
-        // if new user, insert information in DB
+        // insert query with urql
+
+        // if no user, create a user with urql
+        // signin with the email
         signIn('email', { email })
     }
 
@@ -42,25 +51,5 @@ const Page: React.FC = () => {
         </>
     )
 }
-
-// const PasswordInput: React.FC<{ name: string }> = ({ name }) => {
-//     const [visible, setVisible] = useState(false)
-//     return (
-//         <div className='flex flex-row items-stretch bg-purple-50 rounded-md overflow-hidden'>
-//             <input
-//                 className='py-2 px-3 bg-transparent flex-1'
-//                 type={visible ? 'text' : 'password'}
-//                 name={name}
-//                 required
-//             />
-//             <button
-//                 className='px-3 rounded-md'
-//                 onClick={() => setVisible(!visible)}
-//             >
-//                 <img src={visible ? 'img/eye.svg' : 'img/crossed-eye.svg'} />
-//             </button>
-//         </div>
-//     )
-// }
 
 export default Page

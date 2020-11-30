@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id                   Int       @id @default(autoincrement())
+  compound_id          String    @unique
+  user_id              Int
+  provider_type        String
+  provider_id          String
+  provider_account_id  String
+  refresh_token        String?
+  access_token         String?
+  access_token_expires DateTime?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @default(now())
+
+  @@index([provider_account_id], name: "provider_account_id")
+  @@index([provider_id], name: "provider_id")
+  @@index([user_id], name: "user_id")
+}
+
+model sessions {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  expires       DateTime
+  session_token String   @unique
+  access_token  String   @unique
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String?
+  auth_srid Int?
+  srtext    String?
+  proj4text String?
+}
+
+model users {
+  id             Int       @id @default(autoincrement())
+  name           String?
+  firstname      String?
+  lastname       String?
+  promotion      Int?
+  major          String?
+  email          String?   @unique
+  email_verified DateTime?
+  image          String?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+}
+
+model verification_requests {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+// The underlying table does not contain a valid unique identifier and can therefore currently not be handled.
+model comments {
+  id         Int      @id @default(autoincrement())
+  body       String
+  author_id  String
+  reply_to   Int?
+  post_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+// The underlying table does not contain a valid unique identifier and can therefore currently not be handled.
+model posts {
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  author_id  String
+  title      String
+  body       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+// The underlying table does not contain a valid unique identifier and can therefore currently not be handled.
+model universities {
+  id         Int      @id @default(autoincrement())
+  name       String
+  country    String
+  city       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}

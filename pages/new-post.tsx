@@ -1,18 +1,10 @@
-import { useState } from 'react'
-import { GetServerSideProps } from 'next'
-import { withIronSession } from 'next-iron-session'
-import Layout from '@components/layout'
+import { FC, useState } from 'react'
 
-interface User {
-    uid: string
-    firstname: string
-    lastname: string
-    email: string
-}
+import Layout from '@components/layout'
 
 const tagList = ['catalogue', 'démarches', 'expérience', 'question']
 
-const Page: React.FC<{ user: User }> = ({ user }) => {
+const Page: FC = () => {
     const [tags, setTags] = useState<string[]>([])
 
     const handleTagClick = (tag: string) => {
@@ -24,7 +16,7 @@ const Page: React.FC<{ user: User }> = ({ user }) => {
     }
 
     return (
-        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
+        <Layout>
             <main className='max-w-6xl mx-auto'>
                 <div className='p-12'>
                     <form
@@ -59,7 +51,7 @@ const Page: React.FC<{ user: User }> = ({ user }) => {
                         </div>
                         <div>
                             <input
-                                className='cursor-pointer px-6 py-1 bg-purple-500 text-gray-50 rounded'
+                                className='cursor-pointer px-6 py-1 bg-purple-400 text-gray-50 rounded'
                                 type='submit'
                                 value='Publier'
                             />
@@ -90,38 +82,6 @@ const Tag: React.FC<{
     >
         {title}
     </div>
-)
-
-export const getServerSideProps: GetServerSideProps = withIronSession(
-    async ({ req, res }) => {
-        const user = req.session.get('user')
-
-        if (user) {
-            // fetch some more information
-            return {
-                props: {
-                    user
-                }
-            }
-        }
-
-        if (!user) {
-            // redirect to login page
-
-            res.writeHead(301, {
-                Location: '/login'
-            })
-            res.end()
-            return { props: {} }
-        }
-    },
-    {
-        cookieName: process.env.COOKIE_NAME!,
-        cookieOptions: {
-            secure: process.env.NODE_ENV === 'production'
-        },
-        password: process.env.SESSION_SECRET!
-    }
 )
 
 export default Page

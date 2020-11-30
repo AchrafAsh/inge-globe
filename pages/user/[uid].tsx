@@ -1,61 +1,50 @@
+import { FC } from 'react'
 import { GetServerSideProps } from 'next'
-import { withIronSession } from 'next-iron-session'
+import { getSession } from 'next-auth/client'
+
 import Layout from '@components/layout'
 
 interface User {
-    uid: string
+    email: string
     firstname: string
     lastname: string
-    email: string
     promotion: number
     major: string
 }
 
-const Page: React.FC<{ user: User; profile: User }> = ({ user, profile }) => {
+const Page: FC<{ user: User | undefined }> = () => {
     return (
-        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
-            <div>
-                {profile.firstname} {profile.lastname}
-            </div>
+        <Layout>
+            <div>User profile here!</div>
         </Layout>
     )
 }
 
-export const getServerSideProps: GetServerSideProps = withIronSession(
-    async ({ req, res }) => {
-        const user = req.session.get('user')
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const uid = context.params?.uid
+    console.log({ uid })
 
-        if (user) {
-            // fetch some more information
-            // get profile from uid
-            const uid = req.query
-            console.log({ uid })
-
-            return {
-                props: {
-                    user,
-                    profile: user
-                }
-            }
+    if (!uid) {
+        return {
+            props: { user: undefined }
         }
-
-        if (!user) {
-            // redirect to login page
-
-            res.writeHead(301, {
-                Location: '/login'
-            })
-            res.end()
-            return { props: {} }
-        }
-    },
-    {
-        cookieName: process.env.COOKIE_NAME!,
-        cookieOptions: {
-            secure: process.env.NODE_ENV === 'production'
-        },
-        password: process.env.SESSION_SECRET!
     }
-)
+
+    // get user with that uid with urql
+    // const user =
+    // if (!user) {
+    //     return {
+    //         props: {
+    //             user: undefined
+    //         }
+    //     }
+    // }
+
+    return {
+        props: {
+            user: {}
+        }
+    }
+}
 
 export default Page

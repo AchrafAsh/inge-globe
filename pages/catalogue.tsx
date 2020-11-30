@@ -1,18 +1,9 @@
+import { FC, useState } from 'react'
 import Layout from '@components/layout'
-import { GetServerSideProps } from 'next'
-import { withIronSession } from 'next-iron-session'
-import { useState } from 'react'
 
-interface User {
-    uid: string
-    firstname: string
-    lastname: string
-    email: string
-}
-
-const Page: React.FC<{ user: User }> = ({ user }) => {
+const Page: FC = () => {
     return (
-        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
+        <Layout>
             <main className='max-w-6xl mx-auto py-12'>
                 <div className='py-6'>
                     <h1 className='font-black text-3xl text-center'>
@@ -91,7 +82,7 @@ const ResultCard: React.FC<ResultProps> = ({ title, subtitle, features }) => {
     return (
         <div className='p-6 bg-white shadow-md rounded-md flex flex-row space-x-3'>
             <div>
-                <div className='rounded-full w-20 h-20 bg-purple-500' />
+                <div className='rounded-full w-20 h-20 bg-purple-400' />
             </div>
             <div className=''>
                 <div className='mb-4'>
@@ -130,7 +121,7 @@ const Filter: React.FC<FilterProps> = ({ feature, label, values }) => {
         <div>
             <button
                 onClick={() => setToggle(!toggle)}
-                className='bg-purple-500 text-gray-50 rounded flex flex-row items-center justify-center space-x-2 py-1 px-3'
+                className='bg-purple-400 text-gray-50 rounded flex flex-row items-center justify-center space-x-2 py-1 px-3'
             >
                 <div>{value ? value : label}</div>
                 <svg
@@ -171,38 +162,5 @@ const Filter: React.FC<FilterProps> = ({ feature, label, values }) => {
         </div>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = withIronSession(
-    async ({ req, res }) => {
-        const user = req.session.get('user')
-
-        if (user) {
-            // fetch some more information
-            console.log({ user })
-            return {
-                props: {
-                    user
-                }
-            }
-        }
-
-        if (!user) {
-            // redirect to login page
-
-            res.writeHead(301, {
-                Location: '/login'
-            })
-            res.end()
-            return { props: {} }
-        }
-    },
-    {
-        cookieName: process.env.COOKIE_NAME!,
-        cookieOptions: {
-            secure: process.env.NODE_ENV === 'production'
-        },
-        password: process.env.SESSION_SECRET!
-    }
-)
 
 export default Page

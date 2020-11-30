@@ -1,6 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
 import knex from 'knex'
 
+// replace with prisma
 const db = knex({
     client: 'pg',
     connection: process.env.DB_URI

@@ -1,12 +1,8 @@
 import Link from 'next/link'
 import Post from '@components/Post'
-import { GetServerSideProps } from 'next'
 import Layout from '@components/layout'
-import { useSession } from 'next-auth/client'
 
 const Home: React.FC = () => {
-    const [session, loading] = useSession()
-
     return (
         <Layout>
             <main className='max-w-6xl mx-auto py-12'>

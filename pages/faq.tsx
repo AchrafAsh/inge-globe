@@ -1,18 +1,9 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import Layout from '@components/layout/index'
-import { GetServerSideProps } from 'next'
-import { withIronSession } from 'next-iron-session'
 
-interface User {
-    uid: string
-    firstname: string
-    lastname: string
-    email: string
-}
-
-const Page: React.FC<{ user: User }> = ({ user }) => {
+const Page: FC = () => {
     return (
-        <Layout initials={user.firstname[0] + user.lastname[0]} uid={user.uid}>
+        <Layout>
             <main className='max-w-6xl mx-auto py-12'>
                 <div className='pb-12 max-w-4xl mx-auto'>
                     <h1 className='text-3xl font-black'>FAQ</h1>
@@ -72,38 +63,5 @@ const QACard: React.FC<QAProps> = ({ question, answer }) => {
         </div>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = withIronSession(
-    async ({ req, res }) => {
-        const user = req.session.get('user')
-
-        if (user) {
-            // fetch some more information
-            console.log({ user })
-            return {
-                props: {
-                    user
-                }
-            }
-        }
-
-        if (!user) {
-            // redirect to login page
-
-            res.writeHead(301, {
-                Location: '/login'
-            })
-            res.end()
-            return { props: {} }
-        }
-    },
-    {
-        cookieName: process.env.COOKIE_NAME!,
-        cookieOptions: {
-            secure: process.env.NODE_ENV === 'production'
-        },
-        password: process.env.SESSION_SECRET!
-    }
-)
 
 export default Page

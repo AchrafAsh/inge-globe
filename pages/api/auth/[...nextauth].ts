@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
+import Adapters from 'next-auth/adapters'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 const options = {
     // Configure one or more authentication providers
@@ -16,6 +20,7 @@ const options = {
     jwt: {
         secret: process.env.JWT_SECRET
     },
+    adapter: Adapters.Prisma.Adapter({ prisma }),
     database: process.env.DB_URI
 }
 
