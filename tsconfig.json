@@ -14,8 +14,8 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
@@ -35,12 +35,6 @@
     "paths": {
       "@components/*": [
         "src/components/*"
-      ],
-      "@reducers/*": [
-        "src/reducers/*"
-      ],
-      "@actions/*": [
-        "src/actions/*"
       ],
       "@utils/*": [
         "src/utils/*"
