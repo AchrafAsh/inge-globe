@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 import Link from 'next/link'
+import { signOut } from 'next-auth/client'
 
 interface NavProps {
     uid: string
@@ -25,7 +26,7 @@ const useIsMobile = () => {
     return windowWidth <= 640
 }
 
-const Navbar: React.FC<NavProps> = ({ uid, initials }) => {
+const Navbar: FC = () => {
     const [profileToggle, setProfileToggle] = useState(false)
     const [toggle, setToggle] = useState(false)
     const isMobile = useIsMobile()
@@ -64,24 +65,24 @@ const Navbar: React.FC<NavProps> = ({ uid, initials }) => {
                             onClick={() => setProfileToggle(!profileToggle)}
                             className='cursor-pointer bg-purple-400 text-gray-50 rounded-full w-8 h-8 flex justify-center items-center'
                         >
-                            {initials}
+                            {/* {initials} */}
+                            AA
                         </button>
                         {profileToggle && (
                             <div className='absolute transform -translate-x-full mt-1 bg-white p-1 flex flex-col rounded shadow-lg'>
-                                <Link href={`/user/${uid}`}>
+                                {/* <Link href={`/user/${uid}`}>
                                     <a>
                                         <div className='hover:bg-purple-50 rounded py-1 px-3'>
                                             Profile
                                         </div>
                                     </a>
-                                </Link>
-                                <Link href='/api/auth/logout'>
-                                    <a>
-                                        <div className='hover:bg-purple-50 rounded py-1 px-3 w-max'>
-                                            Se déconnecter
-                                        </div>
-                                    </a>
-                                </Link>
+                                </Link> */}
+                                <button
+                                    onClick={() => signOut()}
+                                    className='hover:bg-purple-50 rounded py-1 px-3 w-max'
+                                >
+                                    Se déconnecter
+                                </button>
                             </div>
                         )}
                     </div>

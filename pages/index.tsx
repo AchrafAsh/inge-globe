@@ -1,19 +1,14 @@
 import Link from 'next/link'
 import Post from '@components/Post'
 import { GetServerSideProps } from 'next'
-import { withIronSession } from 'next-iron-session'
 import Layout from '@components/layout'
+import { useSession } from 'next-auth/client'
 
-interface User {
-    uid: string
-    firstname: string
-    lastname: string
-    email: string
-}
+const Home: React.FC = () => {
+    const [session, loading] = useSession()
 
-const Home: React.FC<{ user: User }> = ({ user }) => {
     return (
-        <Layout uid={user.uid} initials={user.firstname[0] + user.lastname[0]}>
+        <Layout>
             <main className='max-w-6xl mx-auto py-12'>
                 <div className='px-6 py-3'>
                     <Link href='/new-post'>
@@ -49,38 +44,5 @@ const Home: React.FC<{ user: User }> = ({ user }) => {
         </Layout>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = withIronSession(
-    async ({ req, res }) => {
-        const user = req.session.get('user')
-
-        if (user) {
-            // fetch some more information
-            console.log({ user })
-            return {
-                props: {
-                    user
-                }
-            }
-        }
-
-        if (!user) {
-            // redirect to login page
-
-            res.writeHead(301, {
-                Location: '/login'
-            })
-            res.end()
-            return { props: {} }
-        }
-    },
-    {
-        cookieName: process.env.COOKIE_NAME!,
-        cookieOptions: {
-            secure: process.env.NODE_ENV === 'production'
-        },
-        password: process.env.SESSION_SECRET!
-    }
-)
 
 export default Home

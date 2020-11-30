@@ -1,6 +1,5 @@
 import { withIronSession, Handler } from 'next-iron-session'
 import * as bcrypt from 'bcrypt'
-import db from '@config/db'
 
 const handler: Handler = async (req, res) => {
     if (req.method === 'POST') {
