@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "module": "esnext",
+    "target": "es5",
     "lib": [
-      "ES2017",
       "dom",
       "dom.iterable",
       "esnext"
@@ -42,7 +40,17 @@
       "@styles/*": [
         "src/styles/*"
       ],
-    }
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@resolvers/*": [
+        "src/resolvers/*"
+      ],
+      "@inputs/*": [
+        "src/inputs/*"
+      ]
+    },
+    "module": "esnext"
   },
   "include": [
     "next-env.d.ts",

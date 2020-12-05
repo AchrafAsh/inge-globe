@@ -1,5 +1,5 @@
 import { Resolver, Query, Arg } from 'type-graphql'
-import { User } from '../models/User'
+import { User } from '@models/user.model'
 // import { CreateUserInput } from '../inputs/CreateUserInput'
 // import { UpdateUserInput } from '../inputs/UpdateUserInput'
 
@@ -11,8 +11,8 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    user(@Arg('uid') uid: string) {
-        return User.findOne({ where: { uid } })
+    user(@Arg('id') id: string) {
+        return User.findOne({ where: { id } })
     }
 
     // @Mutation(() => User)
