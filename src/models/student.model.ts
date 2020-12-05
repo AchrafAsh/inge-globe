@@ -8,44 +8,36 @@ import {
     UpdateDateColumn
 } from 'typeorm'
 
-@Entity({ name: 'users' })
+@Entity({ name: 'students' })
 @ObjectType()
-export class User extends BaseEntity {
+export class Student extends BaseEntity {
     @Field(() => ID)
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Field(() => String)
-    @Column()
-    name?: string
-
-    @Field(() => String)
-    @Column()
-    firstname!: string
-
-    @Field(() => String)
-    @Column()
-    lastname!: string
-
-    @Field(() => String)
-    @Column({ length: 256 })
-    major!: string
-
-    @Field(() => Int)
-    @Column()
-    promotion!: number
+    @Field(() => ID)
+    @Column({ unique: true })
+    uid!: number // id in the users table
 
     @Field(() => String)
     @Column({ unique: true })
     email!: string
 
-    @Field(() => Date)
-    @Column({ name: 'email_verified' })
-    emailVerified?: Date
+    @Field(() => String)
+    @Column()
+    firstname?: string
 
     @Field(() => String)
     @Column()
-    image?: string
+    lastname?: string
+
+    @Field(() => String)
+    @Column({ length: 256 })
+    major?: string
+
+    @Field(() => Int)
+    @Column()
+    promotion?: number
 
     @Field(() => Date)
     @CreateDateColumn({ name: 'created_at' })

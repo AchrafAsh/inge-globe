@@ -1,38 +1,43 @@
 import Head from 'next/head'
-import { signIn } from 'next-auth/client'
+import { useQuery } from 'urql'
+
 import LoginForm from '@components/LoginForm'
 import SignupForm from '@components/SignupForm'
+import { Post } from '@models/post.model'
 
-const callbackUrl = process.env.NEXTAUTH_URL
+const PostsQuery = `
+    query {
+        posts {
+            id
+            title
+        }
+    }
+`
 
 const Page: React.FC = () => {
-    const handleLogin = (email: string) => {
-        // verify the user exists
-        // do the query with urql
+    const [result, reexecuteQuery] = useQuery({
+        query: PostsQuery
+    })
+    const { data, fetching, error } = result
 
-        // if the user exists proceed to login
-        signIn('email', { email, callbackUrl })
-    }
-
-    const handleSignup = ({ email }: { email: string }) => {
-        // check if no user with that email
-        // insert query with urql
-
-        // if no user, create a user with urql
-        // signin with the email
-        signIn('email', { email })
-    }
+    if (fetching) return <p>Loading...</p>
+    if (error) return <p>Oh no... {error.message}</p>
 
     return (
         <>
             <Head>
                 <title>Connexion</title>
             </Head>
+            <ul>
+                {data.posts.map((post: Post) => (
+                    <li key={post.id}>{post.title}</li>
+                ))}
+            </ul>
             <main className='min-h-screen w-full md:py-12 md:px-3 bg-purple-50 flex items-center justify-center'>
                 <div className='bg-white rounded-md shadow-md'>
                     <div className='flex flex-col justify-between lg:flex-row lg:space-x-6 px-6 py-12 md:px-12'>
                         <div className='flex-1'>
-                            <LoginForm handleLogin={handleLogin} />
+                            <LoginForm />
                         </div>
                         <div className='flex items-center flex-row lg:flex-col lg:space-y-3 py-12 lg:py-0'>
                             <hr className='lg:hidden flex-1' />
@@ -43,7 +48,7 @@ const Page: React.FC = () => {
                             <div className='border border-gray-100 w-0 h-0 lg:h-full' />
                         </div>
                         <div className='flex-1'>
-                            <SignupForm handleSignup={handleSignup} />
+                            <SignupForm />
                         </div>
                     </div>
                 </div>

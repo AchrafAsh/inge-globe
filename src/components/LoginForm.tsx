@@ -1,16 +1,16 @@
-import { useState, FormEvent } from 'react'
+import { FC, useState, FormEvent } from 'react'
+import { signIn } from 'next-auth/client'
 import EmailInput from './EmailInput'
 
-interface LoginProps {
-    handleLogin: (email: string) => void
-}
-
-const LoginForm: React.FC<LoginProps> = ({ handleLogin }) => {
+const LoginForm: FC = () => {
     const [email, setEmail] = useState('')
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        handleLogin(`${email}@ensta-paris.fr`)
+        // check if user already registered
+
+        // if yes proceed to signin
+        signIn(`${email}@ensta-paris.fr`)
     }
 
     return (

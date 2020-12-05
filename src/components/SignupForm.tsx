@@ -1,4 +1,5 @@
-import { FC, FormEvent, ChangeEvent, useState } from 'react'
+import { FC, FormEvent, useState } from 'react'
+import { signIn } from 'next-auth/client'
 import EmailInput from './EmailInput'
 
 interface User {
@@ -9,37 +10,26 @@ interface User {
     lastname: string
 }
 
-interface FormProps {
-    handleSignup: (user: User) => void
-}
-
-const SignupForm: FC<FormProps> = ({ handleSignup }) => {
-    const [formData, setFormData] = useState<User>({
-        email: '',
-        promotion: 2020,
-        firstname: '',
-        lastname: '',
-        major: ''
-    })
+const SignupForm: FC = () => {
+    const [email, setEmail] = useState('')
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
+    const [promotion, setPromotion] = useState('2020')
+    const [major, setMajor] = useState('')
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
+        let fullEmail = `${email}@ensta-paris.fr`
         const newUser: User = {
-            ...formData,
-            email: `${formData.email}@ensta-paris.fr`
+            email: fullEmail,
+            firstname,
+            lastname,
+            promotion: parseInt(promotion),
+            major
         }
-        // do something here
-        handleSignup(newUser)
-    }
-
-    const handleFormChange = (
-        key: keyof User,
-        e: ChangeEvent<HTMLInputElement>
-    ) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [key]: e.currentTarget.value
-        }))
+        // signin with next-auth
+        signIn('email', { email: fullEmail })
+        // add user in database
     }
 
     return (
@@ -65,8 +55,8 @@ const SignupForm: FC<FormProps> = ({ handleSignup }) => {
                             className='px-3 py-2 bg-purple-50 rounded-md'
                             type='firstname'
                             name='firstname'
-                            value={formData.firstname}
-                            onChange={(e) => handleFormChange('firstname', e)}
+                            value={firstname}
+                            onChange={(e) => setFirstname(e.target.value)}
                             required
                         />
                     </div>
@@ -81,8 +71,8 @@ const SignupForm: FC<FormProps> = ({ handleSignup }) => {
                             className='px-3 py-2 bg-purple-50 rounded-md'
                             type='lastname'
                             name='lastname'
-                            value={formData.lastname}
-                            onChange={(e) => handleFormChange('lastname', e)}
+                            value={lastname}
+                            onChange={(e) => setLastname(e.target.value)}
                             required
                         />
                     </div>
@@ -94,10 +84,8 @@ const SignupForm: FC<FormProps> = ({ handleSignup }) => {
                             email
                         </label>
                         <EmailInput
-                            value={formData.email}
-                            handleChange={(email) =>
-                                setFormData((prev) => ({ ...prev, email }))
-                            }
+                            value={email}
+                            handleChange={(email) => setEmail(email)}
                         />
                     </div>
                     {/* <div className='flex flex-col w-full'>
@@ -131,10 +119,8 @@ const SignupForm: FC<FormProps> = ({ handleSignup }) => {
                                 placeholder='2020'
                                 type='text'
                                 name='promotion'
-                                value={formData.major}
-                                onChange={(e) =>
-                                    handleFormChange('promotion', e)
-                                }
+                                value={promotion}
+                                onChange={(e) => setPromotion(e.target.value)}
                                 required
                             />
                         </div>
@@ -151,8 +137,8 @@ const SignupForm: FC<FormProps> = ({ handleSignup }) => {
                                 type='text'
                                 name='major'
                                 required
-                                value={formData.major}
-                                onChange={(e) => handleFormChange('major', e)}
+                                value={major}
+                                onChange={(e) => setMajor(e.target.value)}
                             />
                         </div>
                     </div>

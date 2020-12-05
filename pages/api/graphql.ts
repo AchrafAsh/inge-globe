@@ -4,7 +4,7 @@ import { buildSchema } from 'type-graphql'
 import { PostResolver } from '@resolvers/post.resolver'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getOrCreateConnection } from '@utils/index'
-import { UserResolver } from '@resolvers/user.resolver'
+import { StudentResolver } from '@resolvers/student.resolver'
 import { CommentResolver } from '@resolvers/comment.resolver'
 
 export const config = {
@@ -14,9 +14,9 @@ export const config = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const connection = await getOrCreateConnection()
+    await getOrCreateConnection()
     const schema = await buildSchema({
-        resolvers: [PostResolver, UserResolver, CommentResolver]
+        resolvers: [PostResolver, StudentResolver, CommentResolver]
     })
 
     const apolloServer = new ApolloServer({ schema })
