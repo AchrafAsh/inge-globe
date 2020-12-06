@@ -112,3 +112,24 @@ PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX email
 ON students(email);
+CREATE TABLE post
+(
+id             SERIAL,
+title      VARCHAR(255) NOT NULL,
+body       VARCHAR(255) NOT NULL,
+PRIMARY KEY (id)
+);
+CREATE TABLE post
+(
+id             SERIAL,
+title      VARCHAR(255) NOT NULL,
+body       VARCHAR(255) NOT NULL,
+PRIMARY KEY (id)
+);
+CREATE TABLE comment
+(
+id             SERIAL,
+post_id      INTEGER NOT NULL,
+body       VARCHAR(255) NOT NULL,
+PRIMARY KEY (id)
+);

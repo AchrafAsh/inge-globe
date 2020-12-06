@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 
 @ObjectType()
-@Entity('universities')
+@Entity('university')
 export class University extends BaseEntity {
     @Field(() => ID)
     @PrimaryGeneratedColumn()

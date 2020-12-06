@@ -1,6 +1,6 @@
 import { Comment } from '@models/comment.model'
 import { Post } from '@models/post.model'
-import { Student } from '@models/student.model'
+import { User } from '@models/user.model'
 import { getConnection, createConnection, Connection } from 'typeorm'
 
 export async function getOrCreateConnection(): Promise<Connection> {
@@ -8,7 +8,6 @@ export async function getOrCreateConnection(): Promise<Connection> {
         const conn = getConnection()
         return conn
     } catch (e) {
-        console.log('creating a new connection...')
         return createConnection({
             type: 'postgres',
             host: process.env.POSTGRES_HOST as string,
@@ -16,7 +15,7 @@ export async function getOrCreateConnection(): Promise<Connection> {
             username: process.env.POSTGRES_USER as string,
             password: process.env.POSTGRES_PASSWORD as string,
             database: process.env.POSTGRES_DB as string,
-            entities: [Post, Student, Comment],
+            entities: [User, Post, Comment],
             synchronize: false,
             logging: true
         })

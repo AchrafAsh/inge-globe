@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 
 @ObjectType()
-@Entity('comments')
+@Entity('comment')
 export class Comment extends BaseEntity {
     @Field(() => ID)
     @PrimaryGeneratedColumn()

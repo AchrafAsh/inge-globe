@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Field, ID, ObjectType, Root } from 'type-graphql'
 import {
     Entity,
     Column,
@@ -7,9 +7,10 @@ import {
     CreateDateColumn,
     UpdateDateColumn
 } from 'typeorm'
+import { Comment } from '@models/comment.model'
 
 @ObjectType()
-@Entity('posts')
+@Entity('post')
 export class Post extends BaseEntity {
     @Field(() => ID)
     @PrimaryGeneratedColumn()
@@ -30,6 +31,11 @@ export class Post extends BaseEntity {
     @Field(() => String)
     @Column()
     body!: string
+
+    @Field(() => [Comment])
+    comments(@Root() parent: Post) {
+        return Comment.find({ where: { postId: parent.id } })
+    }
 
     @Field(() => Date)
     @CreateDateColumn({ name: 'created_at' })

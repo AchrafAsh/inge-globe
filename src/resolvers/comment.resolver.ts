@@ -1,6 +1,25 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql'
+import {
+    Resolver,
+    Query,
+    Mutation,
+    Arg,
+    Field,
+    InputType,
+    ID
+} from 'type-graphql'
 import { Comment } from '@models/comment.model'
-// import { CreatePostInput } from 'src/inputs/createCommentInput'
+
+@InputType()
+export class CreateCommentInput {
+    @Field(() => ID)
+    authorId!: number
+
+    @Field()
+    title!: string
+
+    @Field()
+    body!: string
+}
 
 @Resolver()
 export class CommentResolver {
@@ -14,10 +33,10 @@ export class CommentResolver {
         return Comment.findOne({ where: { id } })
     }
 
-    // @Mutation(() => Comment)
-    // async createPost(@Arg('data') data: CreateCommentInput) {
-    //     const comment = Comment.create(data)
-    //     await comment.save()
-    //     return comment
-    // }
+    @Mutation(() => Comment)
+    async createComment(@Arg('data') data: CreateCommentInput) {
+        const comment = Comment.create(data)
+        await comment.save()
+        return comment
+    }
 }
