@@ -10,7 +10,7 @@ const LoginForm: FC = () => {
         // check if user already registered
 
         // if yes proceed to signin
-        signIn(`${email}@ensta-paris.fr`)
+        signIn('email', { email: `${email}@ensta-paris.fr` })
     }
 
     return (

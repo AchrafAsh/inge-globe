@@ -4,7 +4,7 @@ import { Provider as AuthProvider } from 'next-auth/client'
 import { createClient, Provider } from 'urql'
 
 const client = createClient({
-    url: `http://localhost:3000/api/graphql`
+    url: `${process.env.NEXTAUTH_URL}/api/graphql`
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
