@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "bvvxotlvefoqjfpwvsrk-postgresql.services.clever-cloud.com",
+    "port": 5432,
+    "username": "ucwlefuxhuheibf6vqmc",
+    "password": "Yd2wO7krbF2AGPddDpYb",
+    "database": "bvvxotlvefoqjfpwvsrk",
+    "entities": ["src/models/post.model.ts", "src/models/student.model.ts", "src/models/comment.model.ts", "src/models/university.model.ts"],
+    "synchronize": false,
+    "logging": true
+}
