@@ -1,8 +1,41 @@
 import Link from 'next/link'
 import Post from '@components/Post'
 import Layout from '@components/layout'
+import { useQuery } from 'urql'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
+// import { useSession } from 'next-auth/client'
 
-const Home: React.FC = () => {
+const ProfileQuery = `
+    query {
+        me {
+            id
+            email
+            firstname
+            lastname
+            promotion
+            major
+        }
+    }
+`
+
+const Home = () => {
+    const router = useRouter()
+    const [result, executeQuery] = useQuery({
+        query: ProfileQuery
+    })
+    const { data, fetching, error } = result
+
+    if (fetching) return <p>Loading...</p>
+    if (error) return <p>Oh no... {error.message}</p>
+    if (data.me === null) return router.push('/login')
+    if (
+        data.me.email === null ||
+        data.me.firstname === null ||
+        data.me.lastname === null
+    )
+        router.push('/profile')
+
     return (
         <Layout>
             <main className='max-w-6xl mx-auto py-12'>

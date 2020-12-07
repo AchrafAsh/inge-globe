@@ -16,7 +16,14 @@ const options: InitOptions = {
     jwt: {
         secret: process.env.JWT_SECRET
     },
-    database: process.env.DB_URI
+    database: process.env.DB_URI,
+    events: {
+        error: async (message: any) => {
+            /* error in authentication flow */
+            console.log({ message })
+            // remove the created User if no user created
+        }
+    }
 }
 
 export default (req: NextApiRequest, res: NextApiResponse) =>

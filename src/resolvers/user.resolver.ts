@@ -2,6 +2,7 @@ import {
     InputType,
     Field,
     Int,
+    ID,
     Resolver,
     Query,
     Arg,
@@ -36,6 +37,24 @@ export class LoginInput {
     email!: string
 }
 
+@InputType()
+export class UpdateInput {
+    @Field(() => ID)
+    id!: number
+
+    @Field(() => String, { nullable: true })
+    firstname?: string
+
+    @Field(() => String, { nullable: true })
+    lastname?: string
+
+    @Field(() => String, { nullable: true })
+    major?: string
+
+    @Field(() => Int, { nullable: true })
+    promotion?: number
+}
+
 @Resolver(User)
 export class UserResolver {
     @Query(() => [User])
@@ -44,8 +63,8 @@ export class UserResolver {
     }
 
     @Query(() => User)
-    user(@Arg('id') id: string) {
-        return User.findOne({ where: { id } })
+    user(@Arg('email') email: string) {
+        return User.findOne({ where: { email } })
     }
 
     @Query(() => User, { nullable: true })
@@ -79,5 +98,40 @@ export class UserResolver {
 
         signIn('email', { email: data.email })
         return user
+    }
+
+    @Mutation(() => Boolean)
+    async deleteUser(@Arg('id') id: number) {
+        try {
+            const user = await User.findOne({ where: { id } })
+            if (!user) throw `No user found with id ${id}`
+
+            await user.remove()
+            return true
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+    }
+
+    @Mutation(() => Boolean)
+    async updateUser(@Arg('data') data: UpdateInput) {
+        try {
+            const user = await User.findOne({ where: { id: data.id } })
+            if (!user) throw `No user found with id ${data.id}`
+
+            if (data.firstname) user.firstname = data.firstname
+            if (data.lastname) user.lastname = data.lastname
+            if (data.major) user.major = data.major
+            if (data.promotion) user.promotion = data.promotion
+
+            await user.save()
+
+            return true
+        } catch (error) {
+            console.error(error)
+
+            return false
+        }
     }
 }

@@ -11,39 +11,51 @@ import { Comment } from '@models/comment.model'
 import { Post } from '@models/post.model'
 
 @ObjectType()
-@Entity('user')
+@Entity('users')
 export class User extends BaseEntity {
     @Field(() => ID)
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Field()
-    @Column({ unique: true })
-    email!: string
+    @Field({ nullable: true })
+    @Column({ unique: true, nullable: true })
+    email?: string
 
-    @Field()
-    @Column()
-    firstname!: string
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    email_verified?: Date
 
-    @Field()
-    @Column()
-    lastname!: string
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    image?: string
 
-    @Field(() => Int)
-    @Column()
-    promotion!: number
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    name?: string
 
-    @Field()
-    @Column()
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    firstname?: string
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    lastname?: string
+
+    @Field(() => Int, { nullable: true })
+    @Column({ nullable: true })
+    promotion?: number
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     major?: string
 
     @Field(() => Date)
     @CreateDateColumn({ name: 'created_at' })
-    createdAt!: Date
+    createdAt?: Date
 
     @Field(() => Date)
     @UpdateDateColumn({ name: 'updated_at' })
-    updatedAt!: Date
+    updatedAt?: Date
 
     @Field(() => [Comment])
     comments(@Root() parent: User) {

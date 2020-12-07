@@ -5,12 +5,13 @@ import EmailInput from './EmailInput'
 const LoginForm: FC = () => {
     const [email, setEmail] = useState('')
 
-    const onSubmit = (e: FormEvent) => {
+    const onSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        // check if user already registered
-
-        // if yes proceed to signin
-        signIn('email', { email: `${email}@ensta-paris.fr` })
+        let fullEmail = `${email}@ensta-paris.fr`
+        signIn('email', {
+            email: fullEmail,
+            callbackUrl: 'http://localhost:3000/'
+        })
     }
 
     return (
